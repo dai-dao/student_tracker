@@ -20,7 +20,8 @@ def register():
                             username=form.username.data,
                             first_name=form.first_name.data,
                             last_name=form.last_name.data,
-                            password=form.password.data)
+                            password=form.password.data,
+                            forum = form.forum.data)
 
         # add employee to the database
         db.session.add(employee)
@@ -33,7 +34,7 @@ def register():
     # load registration template
     return render_template('auth/register.html', form=form, title='Register')
 
-@auth.route('/login', methods=['GET', 'POST'])
+@auth.route('/login/', methods=['GET', 'POST'])
 def login():
     """
     Handle requests to the /login route
@@ -52,7 +53,7 @@ def login():
 
             # redirect to the appropriate dashboard page
             if employee.is_admin:
-                return redirect(url_for('home.admin_dashboard'))
+                return redirect(url_for('home.admin_dashboard', forum=employee.forum))
             else:
                 return redirect(url_for('home.dashboard'))
 

@@ -22,7 +22,8 @@ class Employee(UserMixin, db.Model):
     password_hash = db.Column(db.String(128))
     department_id = db.Column(db.Integer, db.ForeignKey('departments.id'))
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
-    is_admin = db.Column(db.Boolean, default=False)
+    is_admin = db.Column(db.Boolean, default=True)
+    forum = db.Column(db.String(60), index=True, unique=True)
 
     @property
     def password(self):
@@ -73,7 +74,6 @@ class Role(db.Model):
     """
     Create a Role table
     """
-
     __tablename__ = 'roles'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -86,28 +86,34 @@ class Role(db.Model):
     def __repr__(self):
         return '<Role: {}>'.format(self.name)
 
-attendance = db.Table('attendance',
-    db.Column('event_id', db.Integer, db.ForeignKey('event.id'), nullable=False),
-    db.Column('student_id', db.Integer, db.ForeignKey('student.id'), nullable=False),
-    db.Column('TF_comment', db.String(1000)),
-    db.PrimaryKeyConstraint('event_id', 'student_id')
-)
+
+class Attendance(db.Model):
+    __tablename__ = 'attendance'
+    event_id = db.Column(db.Integer, db.ForeignKey('events.id'), primary_key=True)
+    student_id = db.Column(db.Integer, db.ForeignKey('students.id'), primary_key=True)
+    TF_comment = db.Column(db.String(1000))
+    is_attended = db.Column(db.Boolean, default=False)
+    student = db.relationship('Student', backref='attendance_assoc')
 
 class Event(db.Model):
+    __tablename__ = 'events'
     id = db.Column(db.Integer, primary_key=True)
     event_name = db.Column(db.String(60), index=True)
     event_description = db.Column(db.String(60))
-    event_date = db.Column(db.DateTime, index=True)
-
-    students = db.relationship('Student', secondary=attendance,
-        backref=db.backref('students', lazy='dynamic'))
-
-
-class Student(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    first_name = db.Column(db.String(60), index=True)
-    last_name = db.Column(db.String(60), index=True)
-    ccid = db.Column(db.String(20), unique=True, index=True)
+    event_date = db.Column(db.DateTime)
+    attendance = db.relationship('Attendance', backref='event')
 
     def __repr__(self):
-        return '<Student: {} {}>'.format(self.first_name, self.last_name)
+        return '<Event: {}>'.format(self.event_name)
+
+class Student(db.Model):
+    __tablename__ = 'students'
+    id = db.Column(db.Integer, primary_key=True)
+    #first_name = db.Column(db.String(60), index=True)
+    #last_name = db.Column(db.String(60), index=True)
+    #ccid = db.Column(db.String(20), unique=True, index=True)
+    name = db.Column(db.String(60))
+    forum = db.Column(db.String(60), index=True)
+
+    def __repr__(self):
+        return '<Student: {}>'.format(self.name)

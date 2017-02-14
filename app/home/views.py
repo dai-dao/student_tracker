@@ -4,14 +4,14 @@ from flask_login import current_user, login_required
 from . import home
 
 # add admin dashboard view
-@home.route('/admin/dashboard')
+@home.route('/admin/dashboard/<string:forum>')
 @login_required
-def admin_dashboard():
+def admin_dashboard(forum):
     # prevent non-admins from accessing the page
     if not current_user.is_admin:
         abort(403)
 
-    return render_template('home/admin_dashboard.html', title="Dashboard")
+    return render_template('home/admin_dashboard.html', title=forum)
 
 @home.route('/')
 def homepage():

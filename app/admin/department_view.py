@@ -94,4 +94,3 @@ def delete_department(id):
     # redirect to the departments page
     return redirect(url_for('admin.list_departments'))
 
-    return render_template(title="Delete Department")

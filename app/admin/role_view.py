@@ -92,4 +92,3 @@ def delete_role(id):
     # redirect to the roles page
     return redirect(url_for('admin.list_roles'))
 
-    return render_template(title="Delete Role")

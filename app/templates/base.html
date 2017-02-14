@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>{{ title }} | Project Dream Team</title>
+    <title>{{ title }} | Peter Lougheed Leadership College </title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
     <link rel="shortcut icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
@@ -21,17 +21,15 @@
                   <span class="icon-bar"></span>
                   <span class="icon-bar"></span>
               </button>
-              <a class="navbar-brand topnav" href="{{ url_for('home.homepage') }}">Project Dream Team</a>
+              <a class="navbar-brand topnav" href="{{ url_for('home.homepage') }}">Peter Lougheed Leadership College</a>
           </div>
           <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
               <!-- Modify nav bar menu -->
               <ul class="nav navbar-nav navbar-right">
                 {% if current_user.is_authenticated %}
                   {% if current_user.is_admin %}
-                    <li><a href="{{ url_for('home.admin_dashboard') }}">Dashboard</a></li>
-                    <li><a href="{{ url_for('admin.list_departments') }}">Departments</a></li>
-                    <li><a href="{{ url_for('admin.list_roles') }}">Roles</a></li>
-                    <li><a href="{{ url_for('admin.list_employees') }}">Employees</a></li>
+                    <li><a href="{{ url_for('teaching_fellow.list_students') }}">Forum {{ current_user.forum }}</a></li>
+                    <li><a href="{{ url_for('teaching_fellow.list_events') }}">Events</a></li>
                   {% else %}
                     <li><a href="{{ url_for('home.dashboard') }}">Dashboard</a></li>
                   {% endif %}

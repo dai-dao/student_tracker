@@ -1,7 +1,7 @@
 # app/admin/forms.py
 
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField
+from wtforms import StringField, SubmitField, BooleanField, TextAreaField
 from wtforms.validators import DataRequired
 from wtforms.ext.sqlalchemy.fields import QuerySelectField
 from ..models import Department, Role
@@ -12,6 +12,8 @@ class DepartmentForm(FlaskForm):
     """
     name = StringField('Name', validators=[DataRequired()])
     description = StringField('Description', validators=[DataRequired()])
+    attended = BooleanField('Attended', validators=[DataRequired()])
+    comment = TextAreaField('TF Comment', validators=[DataRequired()])
     submit = SubmitField('Submit')
 
 class RoleForm(FlaskForm):
@@ -22,6 +24,7 @@ class RoleForm(FlaskForm):
     description = StringField('Description', validators=[DataRequired()])
     submit = SubmitField('Submit')
 
+
 class EmployeeAssignForm(FlaskForm):
     """
     Form for admin to assign departments and roles to employees
@@ -31,3 +34,5 @@ class EmployeeAssignForm(FlaskForm):
     role = QuerySelectField(query_factory=lambda: Role.query.all(),
                             get_label="name")
     submit = SubmitField('Submit')
+
+
